@@ -1,0 +1,464 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+{% include 'inc/navbar.inc.html' %}
+
+<body>
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelId">modal</button> -->
+    
+    {% ifequal request.GET.section 'GDV' %}
+    <div id="GDV">
+        <!-- Modal -->
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Results for the given inputs</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <h3 class="text-center">Sale</h3> -->
+                        <table class="table">
+                            <thead>
+                                <tr class="bg-info text-white">
+                                    <th style="width: 33.33%;">Type</th>
+                                    <th style="width: 33.33%;">Estimate</th>
+                                    <th style="width: 33.33%;">Margin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 20px;"><b>Sale</b></td>
+                                    <td id="sale_estimate">sale_estimate</td>
+                                    <td id="sale_margin">sale_margin</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table">
+                            <thead>
+                                <tr class="bg-info text-white">
+                                    <th style="width: 33.33%;">Type</th>
+                                    <th style="width: 33.33%;">Estimate</th>
+                                    <th style="width: 33.33%;">Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 20px;"><b>Rent</b></td>
+                                    <td id="rent_estimate">rent_estimate</td>
+                                    <td id="rent_unit">rent_margin</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+
+
+                        
+                        <!-- <h3 class="text-center">Rent</h3> -->
+                        
+            
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <br>
+            <br>
+            <br>
+            <div class="row px-2">
+                <div class="col-sm-6">
+                    <h2>GDV Calculator</h2>
+
+                </div>
+                <div class="col-sm-3">
+                    <td style="width: 20%;">
+                        <select class="form-control" id="finish_list">
+                            <option value="">Finish list</option>
+                            <option value="premium">Premium</option>
+                            <option value="medium">Medium</option>
+                            <option value="basic">Basic</option>
+                        </select>
+                        <p class="error-sm text-danger mt-1" id="finish_list_error"></p>
+                    </td>
+
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" name="" id="postcode" placeholder="PostCode">
+                    <p class="error-sm text-danger mt-1" id="postcode_error"></p>
+                </div>
+            </div>
+            <hr>
+            <br>
+
+            <table class="table table-borderless">
+            
+                <tbody>
+                    <tr>
+                        <td style="width: 20%;">
+                            <select class="form-control" id="unit_type">
+                                <option value="">Unit type list</option>
+                                <option value="flat_0">0 Bed Flat</option>
+                                <option value="flat_1">1 Bed Flat</option>
+                                <option value="flat_2">2 Bed Flat</option>
+                                <option value="flat_3">3 Bed Flat</option>
+                                <option value="flat_4">4 Bed Flat</option>
+            
+                                <option value="terranced_house_2">2 Bed Terrace</option>
+                                <option value="terranced_house_3">3 Bed Terrace</option>
+                                <option value="terranced_house_4">4 Bed Terrace</option>
+                                <option value="terranced_house_5">5 Bed Terrace</option>
+            
+                                <option value="semi_detached_house_2">2 Bed Semi</option>
+                                <option value="semi_detached_house_3">3 Bed Semi</option>
+                                <option value="semi_detached_house_4">4 Bed Semi</option>
+                                <option value="semi_detached_house_5">5 Bed Semi</option>
+            
+                                <option value="detached_house_2">2 Bed Detached</option>
+                                <option value="detached_house_3">3 Bed Detached</option>
+                                <option value="detached_house_4">4 Bed Detached</option>
+                                <option value="detached_house_5">5 Bed Detached</option>
+            
+                            </select>
+                            <p class="error-sm text-danger mt-1" id="unit_type_error"></p>
+                        </td>
+
+                        <td style="width: 20%;">
+                            <input class="form-control" type="number" min="1" id="qty" placeholder="Quantity">
+                            <p class="error-sm text-danger mt-1" id="qty_error"></p>
+                        </td>
+
+                        <td style="width: 20%;">
+                            <input class="form-control" type="number" min="1" id="internal_area" placeholder="Internal area">
+                            <p class="error-sm text-danger mt-1" id="internal_area_error"></p>
+                        </td>
+
+
+                        <td style="width: 20%;">
+                            <button type="button" name="" id="" class="btn btn-info btn-block" onclick="add_row()">Add row</button>
+                        </td>
+                    </tr>
+                
+                </tbody>
+            </table>
+
+            <!-- <div class="row">
+                <div class="col-sm-4">
+                    
+
+                </div>
+
+                <div class="col-sm-2">
+                    
+                </div>
+
+                <div class="col-sm-2">
+                
+                </div>
+
+                <div class="col-sm-2">
+            
+
+                </div>
+
+                <div class="col-sm-2">
+                </div>
+
+            </div> -->
+
+            <table class="table" style="border: solid 1px #cccccc; border-radius: 10px;">
+                <thead>
+                    <tr class="text-left bg-secondary text-white" style="border-radius: 10px;">
+                        <th style="width: 20%;">Unit type</th>
+                        <th style="width: 20%;">Qty</th>
+                        <th style="width: 20%;">Internal Area</th>
+                        <!-- <th style="width: 20%;">Status</th> -->
+                        <th style="width: 20%;">Options</th>
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+
+                    
+                </tbody>
+            </table>
+
+            <br>
+            
+            <div class="row">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-block btn-outline-info" onclick="show_results()">
+                        <div class="spinner-border" id="spin_roll" style="color: #cccccc; font-size: small; display: none;"></div>
+                        <p class="m-0 p-1" id="show_text">Show result</p>
+                        
+                    </button>
+
+                </div>
+
+                <div class="col-sm-3">
+
+                </div>
+
+                <div class="col-sm-6">
+                    <p id="main_error" class="text-danger text-right text-lg"></p>
+                </div>
+            </div>
+
+            <br>
+
+        </div>
+
+    </div>
+    {% endifequal %}
+
+    {% ifequal request.GET.section 'BuildCost' %}
+    <div>
+        <!-- Modal -->
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Build cost results</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <h3 class="text-center">Sale</h3> -->
+                        <table class="table" style="border: solid 1px #cccccc;">
+                            <thead>
+                                <tr class="bg-info text-white">
+                                    <th>Postcode</th>
+                                    <th>Building type</th>
+                                    <th>Internal Area</th>
+                                    <th>Finish list</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="input_postcode"></td>
+                                    <td id="input_building_type"></td>
+                                    <td id="input_internal_area"></td>
+                                    <td id="input_finish_list"></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table" style="border: solid 1px #cccccc;">
+                            <thead>
+                                <tr class="bg-info text-white">
+                                    <th style="width: 50%;">Total cost</th>
+                                    <th style="width: 50%;">Cost per sqft</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="output_total_cost"></td>
+                                    <td id="output_cost_per_sqft"></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+
+
+                        
+                        <!-- <h3 class="text-center">Rent</h3> -->
+                        
+            
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+
+                </div>
+
+                <div class="col-sm-4 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="my-2 text-secondary">Build cost Calculator</h4>
+
+                            <!-- postcode -->
+                            <input class="form-control my-4" type="text" name="" id="postcode" placeholder="PostCode">
+                            <p class="error-sm text-danger mt-1" id="postcode_error"></p>
+                            
+                            <!-- Building type -->
+                            <select class="form-control my-4" id="building_type">
+                                <option value="">Building type</option>
+                                <option value="house">House</option>
+                                <option value="block_of_flats">Apartment</option>
+                            </select>
+                            <p class="error-sm text-danger mt-1" id="building_type_error"></p>
+
+                            <!-- Internal area -->
+                            <input class="form-control my-4" type="number" min="1" id="internal_area" placeholder="Internal area">
+                            <p class="error-sm text-danger mt-1" id="internal_area_error"></p>
+
+                            <!-- Finish list -->
+                            <select class="form-control my-4" id="finish_list">
+                                <option value="">Finish list</option>
+                                <option value="premium">Premium</option>
+                                <option value="medium">Medium</option>
+                                <option value="basic">Basic</option>
+                            </select>
+                            <p class="error-sm text-danger mt-1" id="finish_list_error"></p>
+
+                            <button type="button" class="btn btn-block btn-outline-info" onclick="show_results()">
+                                <div class="spinner-border" id="spin_roll" style="color: #cccccc; font-size: small; display: none;"></div>
+                                <p class="m-0 p-0" id="show_text">Show result</p>
+                                
+                            </button>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-4">
+
+                </div>
+            </div>
+
+            <br>
+            
+
+        </div>
+
+    </div>
+
+
+    {% endifequal %}
+
+
+
+</body>
+
+</html>
+
+<script>
+    if ("{{request.GET.section}}" == "") {
+        window.location.href = "?section=GDV";
+    }
+</script>
+
+
+{% ifequal request.GET.section 'GDV' %}
+<script src="{% static 'scripts/gdv.js' %}"></script>
+{% endifequal %}
+
+{% ifequal request.GET.section 'BuildCost' %}
+<script>
+
+    var results = {}
+
+    function show_results(){
+        // validation
+
+        var postcode        = $("#postcode").val();
+        var building_type   = $("#building_type").val();
+        var internal_area   = $("#internal_area").val();
+        var finish_list     = $("#finish_list").val();
+
+        // postcode
+        if (postcode == "" || !(postcode)) {
+            $("#postcode_error").text("Field is required!");
+            return false;
+        }else{
+            results.postcode = postcode;
+            $("#postcode_error").text("");
+        }
+
+        // building_type
+        if (building_type == "" || !(building_type)) {
+            $("#building_type_error").text("Field is required!");
+            return false;
+        }else{
+            results.type = building_type;
+            $("#building_type_error").text("");
+        }
+
+        // internal_area
+        if (internal_area == "" || !(internal_area)) {
+            $("#internal_area_error").text("Field is required!");
+            return false;
+        }else{
+            results.internal_area = internal_area;
+            $("#internal_area_error").text("");
+        }
+
+        // finish list
+        if (finish_list == "" || !(finish_list)) {
+            $("#finish_list_error").text("Field is required!");
+            return false;
+        }else{
+            results.finish_quality = finish_list;
+            $("#finish_list_error").text("");
+        }
+
+        $("#spin_roll").css("display", "");
+        $("#show_text").css("display", "none");
+
+
+        var final_result = JSON.stringify(results);
+
+        $.ajax({
+            url: '/get_buildcost',
+            type: 'GET',
+            data: `myData=${final_result}`,
+            success: function(response){
+                $("#spin_roll").css("display", "none");
+                $("#show_text").css("display", "");
+
+                if (response.status == "success") {
+                    $("#input_postcode").html(`<b>${response.postcode}</b>`);
+                    $("#input_building_type").text(response.type);
+                    $("#input_internal_area").text(response.internal_area+" sqft");
+                    $("#input_finish_list").text(response.finish_quality);
+
+
+                    $("#output_total_cost").text("£ "+response.data.total_cost);
+                    $("#output_cost_per_sqft").text("£ "+response.data.cost_per_sqf);
+                    
+                    console.log(response);
+
+                    $("#modelId").modal("show");
+                }else{
+                    alert(response.message);
+                }
+                
+            }
+        })
+
+        // console.log(results);
+
+        
+
+    }
+
+</script>
+
+{% endifequal %}
